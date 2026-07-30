@@ -93,6 +93,11 @@ for (const { language, route } of staticSeoRoutes) {
   await writeFile(outputPath, localizedHtml, 'utf8')
 }
 
+await writeFile(
+  indexPath,
+  baseHtml.replace(seoBlockPattern, renderSeoBlock('/en', 'en')),
+  'utf8',
+)
 await writeFile(join(distDirectory, 'sitemap.xml'), renderSitemap(), 'utf8')
 await writeFile(
   join(distDirectory, 'robots.txt'),
