@@ -9,6 +9,7 @@ export default defineConfig({
         manualChunks: {
           react: ['react', 'react-dom', 'react-router'],
           motion: ['framer-motion'],
+          three: ['three'],
           icons: ['lucide-react'],
         },
       },
