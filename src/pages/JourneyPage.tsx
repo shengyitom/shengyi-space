@@ -1,12 +1,12 @@
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { PageFrame, SectionIntro } from '../components/PageFrame'
 import { journey, localize } from '../data/site'
 import { useLanguage } from '../i18n/LanguageContext'
 
 export function JourneyPage() {
-  const { language, t } = useLanguage()
+  const { language, path, t } = useLanguage()
 
   return (
     <PageFrame>
@@ -75,7 +75,7 @@ export function JourneyPage() {
           <p className="max-w-lg font-serif text-2xl leading-snug tracking-tight text-[#191919]/70 sm:text-3xl">
             {t('The next chapter focuses on fewer, deeper systems.')}
           </p>
-          <Link to="/now" className="group flex items-center gap-3 text-sm font-medium">
+          <Link to={path('/now')} className="group flex items-center gap-3 text-sm font-medium">
             {t('See what is happening now')}
             <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
           </Link>

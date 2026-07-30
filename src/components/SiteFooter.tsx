@@ -1,9 +1,9 @@
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { profile } from '../data/site'
 import { useLanguage } from '../i18n/LanguageContext'
 
 export function SiteFooter() {
-  const { t } = useLanguage()
+  const { path, t } = useLanguage()
 
   return (
     <footer className="site-footer border-t border-[#191919]/10 bg-white px-6 py-8 sm:px-10 md:px-14">
@@ -21,7 +21,10 @@ export function SiteFooter() {
           >
             {t('GitHub')}
           </a>
-          <Link to="/contact" className="transition-colors duration-200 hover:text-[#191919]">
+          <Link
+            to={path('/contact')}
+            className="transition-colors duration-200 hover:text-[#191919]"
+          >
             {t('Contact')}
           </Link>
         </div>

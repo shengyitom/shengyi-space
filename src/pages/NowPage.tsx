@@ -1,12 +1,12 @@
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { PageFrame, SectionIntro } from '../components/PageFrame'
 import { localize, nowFocus } from '../data/site'
 import { useLanguage } from '../i18n/LanguageContext'
 
 export function NowPage() {
-  const { language, t } = useLanguage()
+  const { language, path, t } = useLanguage()
 
   return (
     <PageFrame>
@@ -71,7 +71,7 @@ export function NowPage() {
               {t('Questions move into the lab.')}
             </h2>
           </div>
-          <Link to="/lab" className="group flex items-center gap-3 text-sm font-medium">
+          <Link to={path('/lab')} className="group flex items-center gap-3 text-sm font-medium">
             {t('Enter AI Lab')}
             <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
           </Link>

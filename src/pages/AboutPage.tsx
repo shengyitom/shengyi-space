@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { PageFrame, SectionIntro } from '../components/PageFrame'
 import { SpaceOrb } from '../components/SpaceOrb'
 import { capabilityGroups, journey, localize, profile, projects } from '../data/site'
@@ -32,7 +32,7 @@ const workingSteps = [
 ]
 
 export function AboutPage() {
-  const { language, t } = useLanguage()
+  const { language, path, t } = useLanguage()
 
   return (
     <PageFrame>
@@ -149,7 +149,7 @@ export function AboutPage() {
                       return project ? (
                         <Link
                           key={title}
-                          to={`/works/${project.slug}`}
+                          to={path(`/works/${project.slug}`)}
                           className="w-fit border-b border-transparent pb-0.5 transition-colors duration-200 hover:border-[#191919]/35 hover:text-[#191919]"
                         >
                           {title}
@@ -191,7 +191,10 @@ export function AboutPage() {
                 2024—2026
               </h2>
             </div>
-            <Link to="/journey" className="group hidden items-center gap-3 text-sm font-medium sm:flex">
+            <Link
+              to={path('/journey')}
+              className="group hidden items-center gap-3 text-sm font-medium sm:flex"
+            >
               {t('Open Journey')}
               <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
             </Link>
@@ -227,7 +230,7 @@ export function AboutPage() {
             </p>
           </div>
           <Link
-            to="/resume"
+            to={path('/resume')}
             className="group flex w-fit items-center gap-4 rounded-lg bg-[#191919] px-6 py-3.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-[#191919]/88"
           >
             {t('Open Resume')}

@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
-import { Link, NavLink, useLocation } from 'react-router-dom'
-import { useLanguage } from '../i18n/LanguageContext'
+import { Link, NavLink, useLocation } from 'react-router'
+import { stripLanguagePrefix, useLanguage } from '../i18n/LanguageContext'
 import { SpaceMark } from './SpaceMark'
 
 const primaryNavigation = [
@@ -27,7 +27,7 @@ export function SiteHeader() {
   const location = useLocation()
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrollProgress, setScrollProgress] = useState(0)
-  const { language, t, toggleLanguage } = useLanguage()
+  const { language, path, t, toggleLanguage } = useLanguage()
 
   useEffect(() => {
     setMenuOpen(false)
@@ -55,7 +55,7 @@ export function SiteHeader() {
     }
   }, [location.pathname])
 
-  const isHome = location.pathname === '/'
+  const isHome = stripLanguagePrefix(location.pathname) === '/'
 
   return (
     <>
@@ -69,7 +69,7 @@ export function SiteHeader() {
           aria-label="Main navigation"
         >
           <Link
-            to="/"
+            to={path('/')}
             className="flex w-fit items-center gap-2.5 text-[#191919]"
             aria-label="shengyi’s space home"
           >
@@ -83,7 +83,7 @@ export function SiteHeader() {
             {primaryNavigation.map(([label, path]) => (
               <NavLink
                 key={path}
-                to={path}
+                to={`/${language}${path}`}
                 className={({ isActive }) =>
                   `relative py-2 text-[13px] transition-colors duration-200 after:absolute after:bottom-0 after:left-0 after:h-px after:bg-[#191919] after:transition-[width] after:duration-300 ${
                     isActive
@@ -158,7 +158,7 @@ export function SiteHeader() {
                       transition={{ delay: 0.035 * index, duration: 0.38 }}
                     >
                       <NavLink
-                        to={path}
+                        to={`/${language}${path === '/' ? '' : path}`}
                         className={({ isActive }) =>
                           `group grid grid-cols-[2.5rem_1fr_auto] items-center gap-3 border-b border-[#191919]/12 py-3.5 transition-colors duration-200 sm:grid-cols-[3.5rem_1fr_11rem] sm:py-4 ${
                             isActive ? 'text-[#191919]' : 'text-[#191919]/48 hover:text-[#191919]'
@@ -186,15 +186,15 @@ export function SiteHeader() {
                   {t('Multimodal systems, evaluation, and useful AI products.')}
                 </p>
                 <div className="mt-10 grid gap-3 text-sm">
-                  <Link to="/now" className="index-link">
+                  <Link to={path('/now')} className="index-link">
                     <span>{t('Current focus')}</span>
                     <span>↗</span>
                   </Link>
-                  <Link to="/resume" className="index-link">
+                  <Link to={path('/resume')} className="index-link">
                     <span>{t('Resume')}</span>
                     <span>↗</span>
                   </Link>
-                  <Link to="/contact" className="index-link">
+                  <Link to={path('/contact')} className="index-link">
                     <span>{t('Contact')}</span>
                     <span>↗</span>
                   </Link>

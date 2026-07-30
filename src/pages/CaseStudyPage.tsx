@@ -1,7 +1,8 @@
 import { ArrowRight } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { Link, Navigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useParams } from 'react-router'
 import { EvidenceDossier } from '../components/EvidenceDossier'
+import { OptimizedImage } from '../components/OptimizedImage'
 import { PageFrame } from '../components/PageFrame'
 import { ProjectStory } from '../components/ProjectStory'
 import { projectEvidence } from '../data/evidence'
@@ -26,7 +27,7 @@ const statusByProject: Record<string, string> = {
 }
 
 export function CaseStudyPage() {
-  const { language, t } = useLanguage()
+  const { language, path, t } = useLanguage()
   const { slug } = useParams()
   const projectIndex = projects.findIndex((item) => item.slug === slug)
   const project = projects[projectIndex]
@@ -52,7 +53,7 @@ export function CaseStudyPage() {
     return () => observer.disconnect()
   }, [project])
 
-  if (!project) return <Navigate to="/works" replace />
+  if (!project) return <Navigate to={path('/works')} replace />
 
   const nextProject = projects[(projectIndex + 1) % projects.length]
   const evidence = projectEvidence[project.slug]
@@ -62,7 +63,7 @@ export function CaseStudyPage() {
       <article className="mx-auto max-w-7xl px-6 pb-24 sm:px-10 md:px-14 md:pb-32">
         <div className="flex items-center justify-between">
           <Link
-            to="/works"
+            to={path('/works')}
             className="text-xs uppercase tracking-[0.15em] text-[#191919]/42 transition-colors duration-200 hover:text-[#191919]"
           >
             ← {t('All Works')}
@@ -108,7 +109,7 @@ export function CaseStudyPage() {
         </section>
 
         <figure className="relative mt-10 aspect-[16/9] overflow-hidden bg-[#efeeee] md:mt-14">
-          <img
+          <OptimizedImage
             src={project.image}
             alt={localize(project.imageAlt, language)}
             className={`h-full w-full object-cover ${
@@ -223,7 +224,7 @@ export function CaseStudyPage() {
         </section>
 
         <Link
-          to={`/works/${nextProject.slug}`}
+          to={path(`/works/${nextProject.slug}`)}
           className="group mt-20 grid overflow-hidden border-y border-[#191919]/10 md:mt-28 md:grid-cols-[0.72fr_1.28fr]"
         >
           <div className="flex min-h-[240px] flex-col justify-between bg-[#F3F2EF] p-7 sm:p-9">
@@ -234,7 +235,7 @@ export function CaseStudyPage() {
             </div>
           </div>
           <div className="relative min-h-[260px] overflow-hidden">
-            <img
+            <OptimizedImage
               src={nextProject.image}
               alt={localize(nextProject.imageAlt, language)}
               className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.02]"

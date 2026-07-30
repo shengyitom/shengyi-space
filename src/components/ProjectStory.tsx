@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react'
 import type { LocalizedText, Project } from '../data/site'
 import { localize } from '../data/site'
 import { useLanguage } from '../i18n/LanguageContext'
+import { OptimizedImage, optimizedImagePath } from './OptimizedImage'
 
 type StoryProps = {
   project: Project
@@ -142,7 +143,7 @@ function DriveMindStory() {
           <AnimatePresence mode="wait">
             <motion.img
               key={step.image}
-              src={step.image}
+              src={optimizedImagePath(step.image, 'webp')}
               alt={localize(step.title, language)}
               initial={{ opacity: 0, scale: 1.01 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -175,7 +176,7 @@ function MedSynthStory() {
 
       <div className="mt-4 bg-[#ece8e2] p-4 sm:p-7 md:p-10">
         <div className="relative aspect-[16/9] overflow-hidden bg-white">
-          <img
+          <OptimizedImage
             src="/projects/medsynth/comparison.png"
             alt={language === 'zh' ? '后续训练结果' : 'Later training output'}
             className="absolute inset-0 h-full w-full object-contain"
@@ -184,7 +185,7 @@ function MedSynthStory() {
             className="absolute inset-0 overflow-hidden"
             style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
           >
-            <img
+            <OptimizedImage
               src="/projects/medsynth/comparison-epoch06.png"
               alt={language === 'zh' ? '早期训练结果' : 'Earlier training output'}
               className="absolute inset-0 h-full w-full object-contain"
@@ -318,7 +319,7 @@ function SlopeStory() {
             <AnimatePresence mode="wait">
               <motion.img
                 key={step.image}
-                src={step.image}
+                src={optimizedImagePath(step.image, 'webp')}
                 alt={localize(step.title, language)}
                 initial={{ opacity: 0, scale: 1.01 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -449,7 +450,7 @@ function GraphStory() {
           <AnimatePresence mode="wait">
             <motion.img
               key={active.image}
-              src={active.image}
+              src={optimizedImagePath(active.image, 'webp')}
               alt={active.title}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -544,7 +545,7 @@ function VidHarmStory() {
             <AnimatePresence mode="wait">
               <motion.img
                 key={view.image}
-                src={view.image}
+                src={optimizedImagePath(view.image, 'webp')}
                 alt={localize(view.title, language)}
                 initial={{ opacity: 0, scale: 1.01 }}
                 animate={{ opacity: 1, scale: 1 }}

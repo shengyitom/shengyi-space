@@ -1,8 +1,9 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { PageFrame, SectionIntro } from '../components/PageFrame'
+import { OptimizedImage } from '../components/OptimizedImage'
 import { projectEvidence } from '../data/evidence'
 import {
   archiveProjects,
@@ -52,7 +53,7 @@ function ProjectTile({
   lead?: boolean
   className?: string
 }) {
-  const { language, t } = useLanguage()
+  const { language, path, t } = useLanguage()
   const evidence = projectEvidence[project.slug]
   const secondImage = evidence?.artifacts.find((artifact) => artifact.src !== project.image)?.src
 
@@ -65,7 +66,7 @@ function ProjectTile({
         className="overflow-hidden border-y border-[#191919]/12"
       >
         <Link
-          to={`/works/${project.slug}`}
+          to={path(`/works/${project.slug}`)}
           className="group grid min-h-[580px] md:grid-cols-[0.72fr_1.28fr]"
         >
           <div className="flex flex-col justify-between bg-[#f3f2ef] p-7 sm:p-10 md:p-12">
@@ -109,13 +110,13 @@ function ProjectTile({
           </div>
 
           <div className="relative min-h-[380px] overflow-hidden bg-[#e9e7e3]">
-            <img
+            <OptimizedImage
               src={project.image}
               alt={localize(project.imageAlt, language)}
               className="absolute inset-0 h-full w-full object-cover object-top transition-all duration-700 ease-out group-hover:scale-[1.015] group-hover:opacity-0"
             />
             {secondImage ? (
-              <img
+              <OptimizedImage
                 src={secondImage}
                 alt=""
                 aria-hidden="true"
@@ -145,15 +146,18 @@ function ProjectTile({
       animate={{ opacity: 1, y: 0 }}
       className={`group overflow-hidden border border-[#191919]/10 bg-[#f3f2ef] ${className}`}
     >
-      <Link to={`/works/${project.slug}`} className="flex h-full min-h-[510px] flex-col">
+      <Link
+        to={path(`/works/${project.slug}`)}
+        className="flex h-full min-h-[510px] flex-col"
+      >
         <div className="relative min-h-[310px] flex-1 overflow-hidden bg-white">
-          <img
+          <OptimizedImage
             src={project.image}
             alt={localize(project.imageAlt, language)}
             className="absolute inset-0 h-full w-full object-cover object-top transition-all duration-700 ease-out group-hover:scale-[1.018] group-hover:opacity-0"
           />
           {secondImage ? (
-            <img
+            <OptimizedImage
               src={secondImage}
               alt=""
               aria-hidden="true"

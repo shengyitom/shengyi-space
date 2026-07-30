@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { BoomerangVideoBg } from '../components/BoomerangVideoBg'
+import { OptimizedImage } from '../components/OptimizedImage'
 import { SpaceOrb } from '../components/SpaceOrb'
 import { localize, profile, projects } from '../data/site'
 import { useLanguage } from '../i18n/LanguageContext'
@@ -16,7 +17,7 @@ const entrances = {
 }
 
 export function HomePage() {
-  const { language, t } = useLanguage()
+  const { language, path, t } = useLanguage()
   const [leadProject, ...sideProjects] = projects.slice(0, 3)
 
   return (
@@ -77,20 +78,20 @@ export function HomePage() {
                 className="mt-8 flex flex-wrap items-center gap-3"
               >
                 <Link
-                  to="/works"
+                  to={path('/works')}
                   className="group inline-flex items-center gap-4 rounded-lg bg-[#191919] px-6 py-3.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-[#191919]/88"
                 >
                   {t('Explore Works')}
                   <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
                 </Link>
                 <Link
-                  to="/about"
+                  to={path('/about')}
                   className="rounded-lg border border-[#191919]/16 bg-white/52 px-6 py-3.5 text-sm font-medium text-[#191919] backdrop-blur-sm transition-colors duration-200 hover:bg-white"
                 >
                   {t('About Me')}
                 </Link>
                 <Link
-                  to="/resume"
+                  to={path('/resume')}
                   className="px-3 py-3.5 text-sm text-[#191919]/52 transition-colors duration-200 hover:text-[#191919]"
                 >
                   {t('Resume ↗')}
@@ -124,7 +125,7 @@ export function HomePage() {
                   {projects.slice(0, 3).map((project) => (
                     <Link
                       key={project.slug}
-                      to={`/works/${project.slug}`}
+                      to={path(`/works/${project.slug}`)}
                       className="group flex items-center justify-between bg-[#F4F3F3] px-4 py-3.5 text-sm transition-colors duration-200 hover:bg-[#e8e7e4] sm:px-5 sm:py-4"
                     >
                       <span>
@@ -160,10 +161,10 @@ export function HomePage() {
 
           <div className="mt-4 grid gap-4 lg:grid-cols-[1.34fr_0.66fr]">
             <Link
-              to={`/works/${leadProject.slug}`}
+              to={path(`/works/${leadProject.slug}`)}
               className="home-project group relative min-h-[540px] overflow-hidden bg-[#eeece9]"
             >
-              <img
+              <OptimizedImage
                 src={leadProject.image}
                 alt={localize(leadProject.imageAlt, language)}
                 className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.015]"
@@ -185,11 +186,11 @@ export function HomePage() {
               {sideProjects.map((project) => (
                 <Link
                   key={project.slug}
-                  to={`/works/${project.slug}`}
+                  to={path(`/works/${project.slug}`)}
                   className="group grid min-h-[260px] overflow-hidden border border-[#191919]/10 bg-[#f4f3f1] sm:grid-rows-[1fr_auto] lg:grid-cols-[0.9fr_1.1fr]"
                 >
                   <div className="relative min-h-[180px] overflow-hidden bg-white">
-                    <img
+                    <OptimizedImage
                       src={project.image}
                       alt={localize(project.imageAlt, language)}
                       className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.025]"
@@ -213,7 +214,7 @@ export function HomePage() {
           </div>
 
           <Link
-            to="/works"
+            to={path('/works')}
             className="group mt-8 inline-flex items-center gap-4 border-b border-[#191919] pb-1 text-sm font-medium"
           >
             {t('View all projects')}
@@ -230,7 +231,7 @@ export function HomePage() {
               'Deepening evaluation, agent workflows, and the quality of model-to-product delivery.',
             )}
           </p>
-          <Link to="/now" className="group flex items-center gap-3 text-sm font-medium">
+          <Link to={path('/now')} className="group flex items-center gap-3 text-sm font-medium">
             {t('Read current focus')}
             <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
           </Link>

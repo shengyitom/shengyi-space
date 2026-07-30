@@ -1,6 +1,26 @@
-import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from 'react'
+import { useLocation, useNavigate } from 'react-router'
+import {
+  getLanguageFromPathname,
+  localizedPath,
+  type Language,
+} from './routing'
 
-export type Language = 'en' | 'zh'
+export {
+  getLanguageFromPathname,
+  localizedPath,
+  stripLanguagePrefix,
+  supportedLanguages,
+  type Language,
+} from './routing'
 
 const zh: Record<string, string> = {
   // Navigation and shared chrome
@@ -386,36 +406,49 @@ type LanguageContextValue = {
   language: Language
   setLanguage: (language: Language) => void
   toggleLanguage: () => void
+  path: (pathname: string) => string
   t: (english: string) => string
 }
 
 const LanguageContext = createContext<LanguageContextValue | null>(null)
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
+  const location = useLocation()
+  const navigate = useNavigate()
   const [language, setLanguageState] = useState<Language>(() => {
+    const routeLanguage = getLanguageFromPathname(window.location.pathname)
+    if (routeLanguage) return routeLanguage
+
     const stored = window.localStorage.getItem('shengyi-space-language')
     return stored === 'zh' ? 'zh' : 'en'
   })
 
-  const setLanguage = (nextLanguage: Language) => {
+  const setLanguage = useCallback((nextLanguage: Language) => {
+    const nextPathname = localizedPath(location.pathname, nextLanguage)
     setLanguageState(nextLanguage)
-  }
+    navigate(`${nextPathname}${location.search}${location.hash}`)
+  }, [location.hash, location.pathname, location.search, navigate])
 
   useEffect(() => {
+    const routeLanguage = getLanguageFromPathname(location.pathname)
+    if (routeLanguage && routeLanguage !== language) {
+      setLanguageState(routeLanguage)
+      return
+    }
+
     window.localStorage.setItem('shengyi-space-language', language)
     document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en'
-    document.title =
-      language === 'zh' ? 'shengyi’s space — AI 工程师' : 'shengyi’s space — AI Engineer'
-  }, [language])
+  }, [language, location.pathname])
 
   const value = useMemo<LanguageContextValue>(
     () => ({
       language,
       setLanguage,
-      toggleLanguage: () => setLanguageState((current) => (current === 'en' ? 'zh' : 'en')),
+      toggleLanguage: () => setLanguage(language === 'en' ? 'zh' : 'en'),
+      path: (pathname) => localizedPath(pathname, language),
       t: (english) => (language === 'zh' ? zh[english] ?? english : english),
     }),
-    [language],
+    [language, setLanguage],
   )
 
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>

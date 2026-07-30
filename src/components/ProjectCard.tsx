@@ -1,17 +1,18 @@
 import { ArrowRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { projectEvidence } from '../data/evidence'
 import { localize, type Project } from '../data/site'
 import { useLanguage } from '../i18n/LanguageContext'
+import { OptimizedImage } from './OptimizedImage'
 
 export function ProjectCard({ project }: { project: Project }) {
-  const { language, t } = useLanguage()
+  const { language, path, t } = useLanguage()
   const evidence = projectEvidence[project.slug]
 
   return (
     <article className="group border-t border-[#191919]/12 py-9 sm:py-12">
       <Link
-        to={`/works/${project.slug}`}
+        to={path(`/works/${project.slug}`)}
         className="grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-stretch lg:gap-14"
       >
         <div className="flex flex-col">
@@ -53,7 +54,7 @@ export function ProjectCard({ project }: { project: Project }) {
         </div>
 
         <div className="relative min-h-[270px] overflow-hidden bg-[#eeeded] sm:min-h-[390px]">
-          <img
+          <OptimizedImage
             src={project.image}
             alt={localize(project.imageAlt, language)}
             className={`absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.018] ${

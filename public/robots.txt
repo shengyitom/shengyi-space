@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://shengyi.space/sitemap.xml

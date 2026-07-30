@@ -1,111 +1,47 @@
-import { useEffect, useRef } from 'react'
-import * as THREE from 'three'
-
 export function SpaceOrb({ className = '' }: { className?: string }) {
-  const mountRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const mount = mountRef.current
-    if (!mount) return
-
-    const scene = new THREE.Scene()
-    const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100)
-    camera.position.z = 7
-
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true })
-    renderer.setClearColor(0xffffff, 0)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.6))
-    renderer.outputColorSpace = THREE.SRGBColorSpace
-    mount.appendChild(renderer.domElement)
-
-    const group = new THREE.Group()
-    scene.add(group)
-
-    const coreGeometry = new THREE.IcosahedronGeometry(1.55, 2)
-    const coreMaterial = new THREE.MeshBasicMaterial({
-      color: 0x191919,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.22,
-    })
-    const core = new THREE.Mesh(coreGeometry, coreMaterial)
-    group.add(core)
-
-    const pointGeometry = new THREE.SphereGeometry(2.15, 28, 18)
-    const pointMaterial = new THREE.PointsMaterial({
-      color: 0x191919,
-      size: 0.018,
-      transparent: true,
-      opacity: 0.42,
-    })
-    const points = new THREE.Points(pointGeometry, pointMaterial)
-    group.add(points)
-
-    const orbitMaterial = new THREE.MeshBasicMaterial({
-      color: 0x191919,
-      transparent: true,
-      opacity: 0.12,
-      wireframe: true,
-    })
-    const orbitGeometry = new THREE.TorusGeometry(2.45, 0.006, 4, 160)
-    const orbitA = new THREE.Mesh(orbitGeometry, orbitMaterial)
-    orbitA.rotation.x = 1.05
-    orbitA.rotation.y = 0.2
-    group.add(orbitA)
-
-    const orbitB = orbitA.clone()
-    orbitB.rotation.x = 0.35
-    orbitB.rotation.y = 1.2
-    orbitB.scale.setScalar(0.82)
-    group.add(orbitB)
-
-    const pointer = new THREE.Vector2()
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-    const handlePointerMove = (event: PointerEvent) => {
-      const rect = mount.getBoundingClientRect()
-      pointer.x = ((event.clientX - rect.left) / rect.width - 0.5) * 0.8
-      pointer.y = ((event.clientY - rect.top) / rect.height - 0.5) * 0.8
-    }
-
-    const resize = () => {
-      const width = Math.max(mount.clientWidth, 1)
-      const height = Math.max(mount.clientHeight, 1)
-      renderer.setSize(width, height, false)
-      camera.aspect = width / height
-      camera.updateProjectionMatrix()
-    }
-
-    const resizeObserver = new ResizeObserver(resize)
-    resizeObserver.observe(mount)
-    mount.addEventListener('pointermove', handlePointerMove)
-    resize()
-
-    let frame = 0
-    const animate = () => {
-      group.rotation.y += prefersReducedMotion ? 0 : 0.0018
-      group.rotation.x += prefersReducedMotion ? 0 : 0.0007
-      group.rotation.y += (pointer.x - group.rotation.y * 0.08) * 0.006
-      group.rotation.x += (-pointer.y - group.rotation.x * 0.08) * 0.006
-      renderer.render(scene, camera)
-      frame = window.requestAnimationFrame(animate)
-    }
-    animate()
-
-    return () => {
-      window.cancelAnimationFrame(frame)
-      resizeObserver.disconnect()
-      mount.removeEventListener('pointermove', handlePointerMove)
-      coreGeometry.dispose()
-      coreMaterial.dispose()
-      pointGeometry.dispose()
-      pointMaterial.dispose()
-      orbitGeometry.dispose()
-      orbitMaterial.dispose()
-      renderer.dispose()
-      renderer.domElement.remove()
-    }
-  }, [])
-
-  return <div ref={mountRef} className={className} aria-hidden />
+  return (
+    <div className={className} aria-hidden>
+      <svg
+        viewBox="0 0 600 600"
+        className="h-full w-full text-[#191919]"
+        fill="none"
+        role="presentation"
+      >
+        <circle cx="300" cy="300" r="156" stroke="currentColor" strokeOpacity="0.16" />
+        <ellipse
+          cx="300"
+          cy="300"
+          rx="238"
+          ry="92"
+          stroke="currentColor"
+          strokeOpacity="0.13"
+          transform="rotate(-18 300 300)"
+        />
+        <ellipse
+          cx="300"
+          cy="300"
+          rx="218"
+          ry="76"
+          stroke="currentColor"
+          strokeOpacity="0.1"
+          transform="rotate(58 300 300)"
+        />
+        <path
+          d="M300 144 435 222 435 378 300 456 165 378 165 222 300 144Zm0 0v156m135-78-135 78m135 78-135-78m0 156V300M165 378l135-78M165 222l135 78"
+          stroke="currentColor"
+          strokeOpacity="0.2"
+        />
+        <circle cx="300" cy="144" r="4" fill="currentColor" fillOpacity="0.38" />
+        <circle cx="435" cy="222" r="4" fill="currentColor" fillOpacity="0.38" />
+        <circle cx="435" cy="378" r="4" fill="currentColor" fillOpacity="0.38" />
+        <circle cx="300" cy="456" r="4" fill="currentColor" fillOpacity="0.38" />
+        <circle cx="165" cy="378" r="4" fill="currentColor" fillOpacity="0.38" />
+        <circle cx="165" cy="222" r="4" fill="currentColor" fillOpacity="0.38" />
+        <circle cx="300" cy="300" r="7" fill="currentColor" fillOpacity="0.46" />
+        <circle cx="93" cy="249" r="3" fill="currentColor" fillOpacity="0.28" />
+        <circle cx="500" cy="353" r="3" fill="currentColor" fillOpacity="0.28" />
+        <circle cx="385" cy="104" r="3" fill="currentColor" fillOpacity="0.28" />
+      </svg>
+    </div>
+  )
 }

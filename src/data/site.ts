@@ -58,9 +58,9 @@ export const profile = {
     en: 'I work across models, data pipelines, backend services, and product interfaces.',
     zh: '我的工作覆盖模型、数据流水线、后端服务与产品界面。',
   } satisfies LocalizedText,
-  email: 'hello@shengyi.space',
-  githubLabel: 'GitHub / shengyi',
-  githubUrl: 'https://github.com/',
+  email: 'shengyitom@gmail.com',
+  githubLabel: 'GitHub / shengyitom',
+  githubUrl: 'https://github.com/shengyitom',
 }
 
 export const capabilityGroups = [

@@ -1,5 +1,5 @@
 import { ArrowRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { PageFrame } from '../components/PageFrame'
 import {
   capabilityGroups,
@@ -11,13 +11,16 @@ import {
 import { useLanguage } from '../i18n/LanguageContext'
 
 export function ResumePage() {
-  const { language, t } = useLanguage()
+  const { language, path, t } = useLanguage()
 
   return (
     <PageFrame className="resume-page">
       <article className="mx-auto max-w-5xl px-6 pb-20 sm:px-10 md:px-14">
         <div className="no-print mb-10 flex items-center justify-between border-b border-[#191919]/10 pb-5">
-          <Link to="/about" className="text-xs text-[#191919]/45 hover:text-[#191919]">
+          <Link
+            to={path('/about')}
+            className="text-xs text-[#191919]/45 hover:text-[#191919]"
+          >
             ← {t('Back to About')}
           </Link>
           <button
@@ -148,7 +151,7 @@ export function ResumePage() {
         </section>
 
         <Link
-          to="/works"
+          to={path('/works')}
           className="no-print group mt-6 flex items-center justify-between border-t border-[#191919]/10 pt-6 text-sm font-medium"
         >
           {t('Explore full case studies')}

@@ -1,11 +1,11 @@
 import { ArrowRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { PageFrame } from '../components/PageFrame'
 import { profile } from '../data/site'
 import { useLanguage } from '../i18n/LanguageContext'
 
 export function ContactPage() {
-  const { t } = useLanguage()
+  const { path, t } = useLanguage()
 
   return (
     <PageFrame className="flex flex-col">
@@ -47,7 +47,7 @@ export function ContactPage() {
               <ArrowRight className="h-5 w-5 text-[#191919]/35 transition-transform duration-300 group-hover:translate-x-1" />
             </a>
             <Link
-              to="/resume"
+              to={path('/resume')}
               className="group flex w-full items-center justify-between border-b border-[#191919]/12 py-7 text-left"
             >
               <div>

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { localize } from '../data/site'
 import type { ProjectEvidence } from '../data/evidence'
 import { useLanguage } from '../i18n/LanguageContext'
+import { OptimizedImage } from './OptimizedImage'
 
 type EvidenceDossierProps = {
   evidence: ProjectEvidence
@@ -188,10 +189,9 @@ export function EvidenceDossier({ evidence }: EvidenceDossierProps) {
                     artifact.span === 'wide' || index === 0 ? 'aspect-[16/10]' : 'aspect-[4/3]'
                   }`}
                 >
-                  <img
+                  <OptimizedImage
                     src={artifact.src}
                     alt={localize(artifact.title, language)}
-                    loading="lazy"
                     className={`h-full w-full transition-transform duration-500 group-hover:scale-[1.015] ${
                       artifact.fit === 'cover' ? 'object-cover' : 'object-contain'
                     } ${artifact.position === 'top' ? 'object-top' : 'object-center'}`}
@@ -270,7 +270,7 @@ export function EvidenceDossier({ evidence }: EvidenceDossierProps) {
             </div>
 
             <div className="relative my-5 min-h-0 flex-1">
-              <img
+              <OptimizedImage
                 src={activeArtifact.src}
                 alt={localize(activeArtifact.title, language)}
                 className="h-full w-full object-contain"
